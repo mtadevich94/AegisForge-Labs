@@ -2,8 +2,6 @@
 
 Learn to read network traffic the way a defender does. Eight story-driven modules take you from "what is a packet?" to writing a full incident report from a capture — using free tools, in a lab you can run on your own laptop.
 
-Part of **Project AegisForge** → Student path → *Phase 2: Reading Network Traffic* → the **Packet Capture Investigation** project.
-
 ## What you'll learn
 
 1. Capture live traffic and navigate Wireshark
