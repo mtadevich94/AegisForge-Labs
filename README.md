@@ -24,6 +24,7 @@ All labs share **one virtual environment**: the same VMs on the same virtual net
 | Systems Administration | [Linux Labs](labs/Systems%20Administration/Linux%20Labs) | Navigating and searching the Linux filesystem | Beginner | 30–45 min |
 | Systems Administration | [Windows Labs](labs/Systems%20Administration/Windows%20Labs) | Navigating and searching Windows; building the domain | Beginner | 30–45 min |
 | Systems Administration | [Wireshark Labs (Packet Watch)](labs/Systems%20Administration/Wireshark%20Labs) | Investigating network traffic with Wireshark | Beginner | 4–6 hours |
+| Systems Administration | [Hardening Challenge](labs/Systems%20Administration/Hardening%20Challenge) | Open-ended: harden your lab VMs with a checklist, then your home network | Beginner–Intermediate | 4–8 hours |
 | Systems Administration | [Tiered Admin Labs](labs/Systems%20Administration/Tiered%20Admin%20Labs) | Tiering an Active Directory domain | Intermediate | 6–8 hours |
 | Networking | [Network Segmentation Labs (The Gatehouse)](labs/Networking/Network%20Segmentation%20Labs) | Four-zone OPNsense firewall design, testing and monitoring | Intermediate | 8–12 hours |
 | Cybersecurity | *Coming later* | Reserved | | |

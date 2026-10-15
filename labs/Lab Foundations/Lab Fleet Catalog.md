@@ -31,6 +31,7 @@ Every VM in the AegisForge lab environment. For build steps and verify commands,
 | **Linux Administration** (Student) | ✔ | | | | | | | |
 | **Windows Administration** (Student) | | ✔ | ✔ | | | | | |
 | **Packet Watch / Wireshark** (Student, Network) | | ○ | ✔ | ✔ | | | | |
+| **Hardening Challenge** (Student / Systems Administration) | ✔ | ○ | ✔ | ○ | | | | |
 | **Tiered Admin** (Systems Administration) | | ✔ | ✔ | | ✔ | | | |
 | **Network Segmentation / The Gatehouse** (Networking) | | | ✔ | ✔ | | ✔ | ✔ | ✔ |
 
