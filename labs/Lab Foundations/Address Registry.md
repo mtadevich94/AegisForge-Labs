@@ -28,7 +28,9 @@ DHCP is off on purpose, so every VM gets a **static** address and nothing drifts
 | `10.10.10.20` | **WKS01** | Static in the flat realm; DNS points to DC01 |
 | `10.10.10.30` | **WATCHTOWER** | Ubuntu host; the "outside" machine in the Gatehouse |
 | `10.10.10.40` | **SRV01** | Tiered Admin member server |
-| `10.10.10.50`–`.59` | *reserved* | Additional Linux hosts |
+| `10.10.10.50` | **VULN01** | Nessus Essentials scanner (Vulnerability Management Challenge) |
+| `10.10.10.51` | Linux lab VM (optional) | Second adapter on `GielinorNAT`, added for scanning; its SSH port-forward stays on Adapter 1 |
+| `10.10.10.52`–`.59` | *reserved* | Additional Linux hosts |
 | `10.10.10.60`–`.99` | *reserved* | Future labs. **Do not assign `.66`** (below) |
 | `10.10.10.66` | *do not assign* | Appears inside the Packet Watch pcaps as a suspicious host; reusing it would confuse the exercises |
 | `10.10.10.100`–`.254` | free | Scratch VMs of your own |
@@ -48,7 +50,7 @@ DHCP is off on purpose, so every VM gets a **static** address and nothing drifts
 
 | VM | Network | Access |
 |---|---|---|
-| Linux lab VM (AlmaLinux) | VirtualBox default NAT, not on `GielinorNAT` | Host-only access through port-forward `127.0.0.1:2222` → guest port 22 |
+| Linux lab VM (AlmaLinux) | VirtualBox default NAT on Adapter 1 (optionally also `GielinorNAT` on Adapter 2, `10.10.10.51`) | Host-only access through port-forward `127.0.0.1:2222` → guest port 22 |
 
 ## Reserved for the Cybersecurity phase
 

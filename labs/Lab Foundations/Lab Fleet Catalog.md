@@ -16,6 +16,7 @@ Every VM in the AegisForge lab environment. For build steps and verify commands,
 | **FW01** | 🆕 | OPNsense (FreeBSD) | 2 GB (4 GB with IDS) | 12 GB | WAN `GielinorNAT` + three internal networks | WAN `10.10.10.5`; `10.20.10.1` / `.20.1` / `.30.1` | [FW01](VM%20Cards/FW01.md) |
 | **WEB01** | 🆕 | Ubuntu Server 24.04 | 1 GB | 10 GB | `realm-market` | `10.20.20.10` | [WEB01](VM%20Cards/WEB01.md) |
 | **ADM01** | 🆕 | Ubuntu Server 24.04 | 1 GB | 10 GB | `realm-citadel` | `10.20.30.10` | [ADM01](VM%20Cards/ADM01.md) |
+| **VULN01** | ✅ | Ubuntu Server 24.04 | 4 GB | 30 GB | `GielinorNAT` | `10.10.10.50` | [VULN01](VM%20Cards/VULN01.md) |
 | **KALI01** | 🕓 | Kali Linux | TBD | TBD | TBD | reserved, see registry | [Reserved](VM%20Cards/Reserved.md) |
 | **SIEM01** | 🕓 | TBD (Security Onion / Elastic stack) | TBD | TBD | TBD | reserved, see registry | [Reserved](VM%20Cards/Reserved.md) |
 | **TARGET01** | 🕓 | TBD (deliberately vulnerable host) | TBD | TBD | TBD | reserved, see registry | [Reserved](VM%20Cards/Reserved.md) |
@@ -32,6 +33,7 @@ Every VM in the AegisForge lab environment. For build steps and verify commands,
 | **Windows Administration** (Student) | | ✔ | ✔ | | | | | |
 | **Packet Watch / Wireshark** (Student, Network) | | ○ | ✔ | ✔ | | | | |
 | **Hardening Challenge** (Student / Systems Administration) | ✔ | ○ | ✔ | ○ | | | | |
+| **Vulnerability Management Challenge** (Systems Administration) | ✔ | ○ | ○ | ○ | ○ | | | |
 | **Tiered Admin** (Systems Administration) | | ✔ | ✔ | | ✔ | | | |
 | **Network Segmentation / The Gatehouse** (Networking) | | | ✔ | ✔ | | ✔ | ✔ | ✔ |
 

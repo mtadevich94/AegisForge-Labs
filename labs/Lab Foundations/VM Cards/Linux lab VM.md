@@ -26,4 +26,6 @@ ssh -p 2222 <your-user>@127.0.0.1
 
 ## Notes
 
-This VM is independent of the rest of the fleet. It needs no addresses from the registry and doesn't conflict with anything.
+By default this VM is independent of the rest of the fleet and needs no addresses from the registry.
+
+**Optional: reachable from the fleet.** The Vulnerability Management Challenge needs VULN01 to reach this VM. Add **Adapter 2** attached to NAT Network `GielinorNAT` and give that interface a static `10.10.10.51/24` with **no gateway** (so Adapter 1 stays the default route and the `2222` port-forward keeps working). The Scanner Setup Guide has the exact steps.

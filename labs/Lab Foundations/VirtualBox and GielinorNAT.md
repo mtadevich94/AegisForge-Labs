@@ -76,6 +76,7 @@ Add up the VMs you'll run **at the same time**, then leave 4 GB for your host.
 | Windows Administration | DC01 + WKS01 | 6–8 GB |
 | Packet Watch | WKS01 + WATCHTOWER (+ DC01 optional) | 6–8 GB |
 | Tiered Admin | DC01 + SRV01 + WKS01 | about 8 GB |
+| Vulnerability Management | VULN01 + two or three targets | 8–10 GB (scan the full fleet in rounds on a 16 GB PC) |
 | The Gatehouse | FW01 + WEB01 + ADM01 + WKS01 + WATCHTOWER | about 10 GB |
 
 Short of RAM? DC01 works at 2 GB, and Windows 11 at 4 GB is the practical floor.
