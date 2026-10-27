@@ -27,6 +27,7 @@ All labs share **one virtual environment**: the same VMs on the same virtual net
 | Systems Administration | [Vulnerability Management Challenge](labs/Systems%20Administration/Vulnerability%20Management%20Challenge) | Open-ended: scan your lab with Nessus Essentials, prioritize, fix, rescan and report | Intermediate | 6–10 hours |
 | Systems Administration | [Hardening Challenge](labs/Systems%20Administration/Hardening%20Challenge) | Open-ended: harden your lab VMs with a checklist, then your home network | Beginner–Intermediate | 4–8 hours |
 | Systems Administration | [Tiered Admin Labs](labs/Systems%20Administration/Tiered%20Admin%20Labs) | Tiering an Active Directory domain | Intermediate | 6–8 hours |
+| Systems Administration | [Fortifying AD Labs](labs/Systems%20Administration/Fortifying%20AD%20Labs) | Guided: remove NTLM, SMB and LDAP legacy risk without breaking a mixed domain | Intermediate | 8–12 hours |
 | Networking | [Network Segmentation Labs (The Gatehouse)](labs/Networking/Network%20Segmentation%20Labs) | Four-zone OPNsense firewall design, testing and monitoring | Intermediate | 8–12 hours |
 | Cybersecurity | *Coming later* | Reserved | | |
 

@@ -35,6 +35,7 @@ Every VM in the AegisForge lab environment. For build steps and verify commands,
 | **Hardening Challenge** (Student / Systems Administration) | ✔ | ○ | ✔ | ○ | | | | |
 | **Vulnerability Management Challenge** (Systems Administration) | ✔ | ○ | ○ | ○ | ○ | | | |
 | **Tiered Admin** (Systems Administration) | | ✔ | ✔ | | ✔ | | | |
+| **Fortifying AD** (Systems Administration, Tiered Admin part 2) | | ✔ | ✔ | ✔ | ✔ | | | |
 | **Network Segmentation / The Gatehouse** (Networking) | | | ✔ | ✔ | | ✔ | ✔ | ✔ |
 
 **Reading the table:** WKS01 is the VM most labs share, so it has the most careful card. The Gatehouse needs WKS01 only in its *minimal* state, so someone who has never built Active Directory can still do it.

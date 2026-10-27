@@ -55,6 +55,10 @@ Basic Windows administration and Active Directory experience is assumed. New to 
 
 Free: VirtualBox, Windows Server and Windows 11 evaluation ISOs (180- and 90-day).
 
+## Next
+
+Once your domain is tiered, continue with **[Fortifying AD](../Fortifying%20AD%20Labs/README.md)**: remove the legacy protocols attackers abuse, without breaking the domain.
+
 ## Versioning
 
 Current: **v1.0.0**. Scripts, guide and answer key move together.
