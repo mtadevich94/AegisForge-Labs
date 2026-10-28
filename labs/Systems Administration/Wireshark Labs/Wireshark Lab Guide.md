@@ -31,6 +31,8 @@ You need:
 
 ### Wireshark cheat sheet (keep this open)
 
+The short version is below. The full one, with file signatures and OS-fingerprinting tables, is the [Wireshark Cheat Sheet](Wireshark%20Cheat%20Sheet.md).
+
 | Want to… | Do this |
 |---|---|
 | Open a pcap | `File → Open` |

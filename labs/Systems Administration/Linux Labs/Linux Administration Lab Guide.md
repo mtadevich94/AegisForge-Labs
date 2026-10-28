@@ -4,6 +4,7 @@
 **Environment:** AlmaLinux 10, minimal install (see the AlmaLinux VirtualBox Setup Guide). Other RHEL-family distributions (Rocky Linux, RHEL) should work too.
 **Setup:** Do the **Access** steps below once: log in as `root`, run the setup script, then **snapshot the VM**. After that you work as `student`.
 **How to use this guide:** Work module by module. Each task tells you *what* to find or do — figure out the command yourself first, then check the Answer Key only if you're stuck or want to confirm.
+**Cheat sheets:** keep the [Linux Commands Cheat Sheet](Linux%20Commands%20Cheat%20Sheet.md) and the [Regex & grep Cheat Sheet](Linux%20Regex%20and%20grep%20Cheat%20Sheet.md) open while you work.
 
 ---
 

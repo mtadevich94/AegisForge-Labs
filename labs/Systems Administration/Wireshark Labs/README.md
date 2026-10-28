@@ -29,6 +29,7 @@ Learn to read network traffic the way a defender does. Eight story-driven module
 | **Wireshark Lab Environment Setup.md** | Build the VMs, run the setup scripts, verify (start here for the full lab) |
 | **Wireshark Lab Guide.md** | The lab itself — eight modules (start here for the pcap-only track) |
 | **Wireshark Lab Answer Key.md** | Check your work *after* you've tried |
+| **Wireshark Cheat Sheet.md** | Filters, menu paths, file signatures and OS-fingerprinting tables. Keep it open while you work |
 | `setup-watchtower-server.sh` | Ubuntu: installs the intentionally-insecure Watchtower (web portal, FTP, HTTPS) |
 | `Setup-WiresharkLab-WKS01.ps1` | Windows 11: installs Wireshark, sets up `C:\GielinorWatch`, tests connectivity |
 | `Invoke-GarrisonTraffic.ps1` | Windows 11: generates live traffic for you to capture |
