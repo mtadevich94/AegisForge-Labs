@@ -8,6 +8,7 @@
 | **Address** | `10.10.10.50/24`, gateway `10.10.10.1`, DNS `1.1.1.1` |
 | **Role** | Runs Nessus Essentials (free, limited to 16 scanned addresses) |
 | **Built by** | Vulnerability Management Challenge (Systems Administration) |
+| **Accounts** | `analyst` (created at install, has `sudo`); Nessus has its own admin login, made in its setup wizard. See [Lab Account Standard](../Lab%20Account%20Standard.md). |
 
 ## Build
 

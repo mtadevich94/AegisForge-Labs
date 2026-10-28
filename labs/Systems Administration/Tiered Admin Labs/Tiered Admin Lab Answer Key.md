@@ -201,7 +201,7 @@ Messages: RDP → *"The sign-in method you're trying to use isn't allowed."* Rem
 ## Module 8 — The Warlord's Path
 
 **8A expected observations**
-1. WKS01 local Administrators: local `Administrator`, `GIELINOR\T2-Admins`. SRV01 refuses `t2-navi` (Tier 2 → Tier 1), which is correct; with `t1-zelda`: local `Administrator`, `GIELINOR\T1-Admins`. `Domain Admins` is **not** present on either.
+1. WKS01 local Administrators: the local administrator (`labadmin`), `GIELINOR\T2-Admins`. SRV01 refuses `t2-navi` (Tier 2 → Tier 1), which is correct; with `t1-zelda`: local `Administrator`, `GIELINOR\T1-Admins`. `Domain Admins` is **not** present on either.
 2. Kerberoastable: `svc-backup` and `svc-web`. `svc-backup` is no longer privileged, but still has an SPN and a never-expiring password → move to gMSA (6F).
 3. `adminCount = 1`: only genuine Tier 0 identities (`Administrator`, `krbtgt`, the T0 members once SDProp runs).
 4. Tasks: `KeepNightlyBackup` as `svc-backup` (now least-privilege); no Domain Admin identity stored on either machine.

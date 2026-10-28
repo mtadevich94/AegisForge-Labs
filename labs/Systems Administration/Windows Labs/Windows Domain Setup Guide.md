@@ -84,13 +84,13 @@ New-ADUser -Name "student" `
   -ChangePasswordAtLogon $false
 ```
 
-This is the account you'll log into `WKS01` with once it's domain-joined. (The full cast of characters used in the Windows Administration Lab is created separately by that lab's own setup script — see the **Windows Administration Lab Guide** — so don't duplicate them here.)
+This is the account you'll log into `WKS01` with once it's domain-joined. (The full cast of characters used in the Windows Administration Lab is created separately by that lab's own setup script — see the **Windows Administration Lab Guide** — so don't duplicate them here.) It is a standard (non-admin) account. Whenever a lab says to run something as administrator on WKS01, sign in as the local administrator instead: choose **Other user** and type `.\labadmin`.
 
 ---
 
 ## Step 5 — Configure WKS01's network identity
 
-Power on WKS01, log in with the local account you created during install.
+Power on WKS01, log in with the local administrator account you created during install (`labadmin`).
 
 **Set a static IP** (PowerShell, run as Administrator):
 ```powershell
@@ -132,7 +132,7 @@ When prompted, enter `GIELINOR\Administrator` (or `student`, if you gave it righ
 
 ## Step 7 — Verify the join
 
-After the restart, at the sign-in screen you should now see an option for **Other user** (or the account list shows the domain). Sign in as `GIELINOR\student` (password `ChangeMe123!` from Step 4).
+After the restart, at the sign-in screen you should now see an option for **Other user** (or the account list shows the domain). Sign in as `GIELINOR\student` (password `ChangeMe123!` from Step 4). `student` is a standard user, so for anything that needs administrator rights sign in as `.\labadmin` instead.
 
 From inside that session, confirm:
 ```powershell

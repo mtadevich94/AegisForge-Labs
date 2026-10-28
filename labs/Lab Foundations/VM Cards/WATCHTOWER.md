@@ -8,6 +8,7 @@
 | **Address** | `10.10.10.30/24`, gateway `10.10.10.1` |
 | **Role** | Capture and analysis host in Packet Watch; the "outside" machine in the Gatehouse |
 | **Built by** | Packet Watch lab (Wireshark Labs) |
+| **Accounts** | `analyst` (created at install, has `sudo`). See [Lab Account Standard](../Lab%20Account%20Standard.md). |
 
 ## Build
 

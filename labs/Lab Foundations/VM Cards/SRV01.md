@@ -8,6 +8,7 @@
 | **Address** | `10.10.10.40/24`, gateway `10.10.10.1`, DNS `10.10.10.10` |
 | **Role** | Domain member server (Tier 1) in the Tiered Admin lab |
 | **Built by** | Tiered Admin lab (Systems Administration) |
+| **Accounts** | local `Administrator` (password you choose), then `GIELINOR\Administrator`; everyday user `GIELINOR\student`. See [Lab Account Standard](../Lab%20Account%20Standard.md). |
 
 ## Requires
 

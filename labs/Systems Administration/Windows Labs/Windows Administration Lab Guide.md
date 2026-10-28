@@ -2,7 +2,7 @@
 ### Student Lab Guide
 
 **Environment:** `WKS01` — Windows 11 Enterprise, joined to `gielinor.local` (see the Domain Setup & Workstation Join Guide)
-**Setup:** log in as an administrator on WKS01 and run `Setup-WindowsGarrisonLab.ps1` once, then **snapshot the VM**.
+**Setup:** sign in as `.\labadmin` on WKS01 and run `Windows Lab Setup Script.ps1` once, then **snapshot the VM**.
 **How to use this guide:** work module by module. Each task tells you *what* to find or do — figure out the command yourself first, then check the Answer Key only if you're stuck or want to confirm. Commands are shown in whichever of CMD or PowerShell fits the task; several tasks deliberately ask for both so you can feel the difference.
 
 ---
@@ -11,7 +11,9 @@
 *Commands: none yet — just getting to a prompt*
 
 1. Start `WKS01` in VirtualBox.
-2. Sign in as a local administrator (or `GIELINOR\student` if you've given that account admin rights) — you need an elevated PowerShell/CMD prompt for most of this lab, so right-click the Start button and choose **Windows Terminal (Admin)** / **Terminal (Admin)**.
+2. Sign in as the local administrator `WKS01\labadmin` (at the sign-in screen choose **Other user** and type `.\labadmin`). `GIELINOR\student` is a standard user and can't do this lab — you need an elevated PowerShell/CMD prompt for most of this lab, so right-click the Start button and choose **Windows Terminal (Admin)** / **Terminal (Admin)**.
+
+> **Names to watch.** This lab's characters (`Navi`, `Zelda_Warden` and the rest) are **local** accounts on WKS01. If you later do Tiered Admin, the domain gets accounts with the same names. In any guide, `WKS01\Navi` means the local one and `GIELINOR\Navi` the domain one. A bare name at the sign-in screen picks the local account.
 
 ---
 

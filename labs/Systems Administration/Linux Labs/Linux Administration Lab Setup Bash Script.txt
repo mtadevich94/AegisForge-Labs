@@ -28,6 +28,19 @@ ${PKG_MGR} install -y net-tools iptables-services audit vim-enhanced cronie \
   at expect openssh-server nfs-utils bind-utils policycoreutils-python-utils \
   tree man-db man-pages 2>/dev/null || true
 
+# dnf cancels the whole install if ONE package name doesn't exist on this release,
+# and the '|| true' above hides that. Retry anything still missing one at a time.
+for pkg in net-tools iptables-services audit vim-enhanced cronie at expect openssh-server \
+           nfs-utils bind-utils policycoreutils-python-utils tree man-db man-pages; do
+  rpm -q --whatprovides "$pkg" >/dev/null 2>&1 && continue
+  ${PKG_MGR} install -y "$pkg" >/dev/null 2>&1 && continue
+  # newer releases renamed iptables-services
+  if [[ "$pkg" == "iptables-services" ]]; then
+    ${PKG_MGR} install -y iptables-nft-services >/dev/null 2>&1 && continue
+  fi
+  echo "WARNING: could not install $pkg - some lab tasks may not work"
+done
+
 systemctl enable --now auditd     2>/dev/null || true
 systemctl enable --now crond      2>/dev/null || true
 systemctl enable --now atd        2>/dev/null || true
@@ -42,8 +55,23 @@ mandb 2>/dev/null || true
 # failed/successful-login exercises in Module 9). Back up original first.
 cp -n /etc/ssh/sshd_config /etc/ssh/sshd_config.lab.bak
 sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+# Root SSH login is turned OFF on purpose. After this script, log in as the
+# 'student' account (ssh -p 2222 student@127.0.0.1) and use sudo.
+#
+# AlmaLinux 9/10 read /etc/ssh/sshd_config.d/*.conf BEFORE the rest of sshd_config, and
+# sshd uses the FIRST value it finds. The installer's "allow root SSH" option writes such a
+# file, so editing sshd_config alone can be silently overridden. Remove the known
+# overrides and put our settings in a file that sorts first.
+rm -f /etc/ssh/sshd_config.d/01-permitrootlogin.conf /etc/ssh/sshd_config.d/99-first-login.conf
+if grep -qE '^[[:space:]]*Include[[:space:]]+/etc/ssh/sshd_config.d' /etc/ssh/sshd_config; then
+  mkdir -p /etc/ssh/sshd_config.d
+  printf 'PermitRootLogin no\nPasswordAuthentication yes\n' > /etc/ssh/sshd_config.d/00-lab.conf
+fi
+# Also set them in the main file (covers releases without drop-in support).
 sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sshd -t
 systemctl restart sshd
+echo "sshd now reports: $(sshd -T 2>/dev/null | grep -i '^permitrootlogin')"
 
 echo "=== [2/10] Creating groups and kingdom characters (users) ==="
 groupadd -f gielinor
@@ -61,6 +89,9 @@ useradd -m -c "Lab Student Account"                          student           2
 for u in General_Graardor Princess_Irulan Zelda_Warden Navi Bandit Kerbe DAME student; do
   echo "${u}:ChangeMe123!" | chpasswd
 done
+
+# 'student' is the everyday admin account: give it sudo through the wheel group.
+usermod -aG wheel student
 
 echo "=== [3/10] Building the find(1)/permissions puzzle vault ==="
 mkdir -p /opt/vault/shadowfiles
@@ -180,5 +211,7 @@ chown -R student:student /home/student/scripts
 echo ""
 echo "############################################################"
 echo "  Lab environment build complete."
-echo "  Take a VM snapshot now, then open Lab_Guide.md."
+echo "  Take a VM snapshot now, then open the Linux Administration Lab Guide."
+echo "  Root SSH login is now OFF. From your host, log in as:"
+echo "    ssh -p 2222 student@127.0.0.1   (password ChangeMe123!, use sudo for admin)"
 echo "############################################################"

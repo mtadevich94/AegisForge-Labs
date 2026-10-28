@@ -8,7 +8,7 @@ Every VM in the AegisForge lab environment. For build steps and verify commands,
 
 | VM | Status | OS | RAM | Disk | Network | Address | Card |
 |---|---|---|---|---|---|---|---|
-| **Linux lab VM** | ✅ | AlmaLinux 8.10 | 2 GB | 20 GB | NAT with port-forward (standalone) | `127.0.0.1:2222` from the host | [Linux lab VM](VM%20Cards/Linux%20lab%20VM.md) |
+| **Linux lab VM** | ✅ | AlmaLinux 10 | 2 GB | 20 GB | NAT with port-forward (standalone) | `127.0.0.1:2222` from the host | [Linux lab VM](VM%20Cards/Linux%20lab%20VM.md) |
 | **DC01** | ✅ | Windows Server 2022 | 4 GB (2 GB works) | 60 GB | `GielinorNAT` | `10.10.10.10` | [DC01](VM%20Cards/DC01.md) |
 | **WKS01** | ✅ | Windows 11 Enterprise | 4 GB | 60 GB | `GielinorNAT` (or `realm-garrison` for the Gatehouse) | `10.10.10.20` / DHCP in the Gatehouse | [WKS01](VM%20Cards/WKS01.md) |
 | **WATCHTOWER** | ✅ | Ubuntu Server 24.04 | 2 GB | 20 GB | `GielinorNAT` | `10.10.10.30` | [WATCHTOWER](VM%20Cards/WATCHTOWER.md) |

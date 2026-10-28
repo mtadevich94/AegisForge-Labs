@@ -1,5 +1,5 @@
 # The Wrkstation Chronicles — Answer Key
-### Most-efficient commands, within the scope list, for every task in Lab_Guide.md
+### Most-efficient commands, within the scope list, for every task in the Linux Administration Lab Guide
 
 ---
 
@@ -163,4 +163,4 @@ fi
 ## Notes for re-running the lab
 - Failed-login counts in Module 9 are deterministic **per fresh run** of `setup_lab_environment.sh` (Bandit=9, Kerbe=6, DAME=3), but `/var/log/btmp` and `/var/log/wtmp` accumulate across runs unless you revert to your snapshot first — revert before re-testing that module for clean counts.
 - The `iptables` rule-removal task (Module 8) is **destructive to itself** — the baseline `sport 4444` rule only exists once; revert to snapshot if you want to redo it.
-- If your distro's `expect` package isn't available (minimal installs sometimes trim it), install from AppStream: `sudo dnf install -y expect` — it's in the base repos on Rocky/Alma/RHEL 8, no EPEL needed.
+- If your distro's `expect` package isn't available (minimal installs sometimes trim it), install from AppStream: `sudo dnf install -y expect` — it's in the base repos on Rocky/Alma/RHEL, no EPEL needed.

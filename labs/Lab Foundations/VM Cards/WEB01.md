@@ -8,6 +8,7 @@
 | **Address** | `10.20.20.10/24`, gateway `10.20.20.1` (FW01) |
 | **Role** | The exposed web tier; also where the attack simulator runs |
 | **Built by** | Network Segmentation lab |
+| **Accounts** | `gatekeeper` (created at install, has `sudo`). See [Lab Account Standard](../Lab%20Account%20Standard.md). |
 
 ## Build
 

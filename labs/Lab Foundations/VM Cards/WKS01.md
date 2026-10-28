@@ -9,12 +9,13 @@ The most-shared VM in the fleet. It has two states so that no lab forces you to 
 | **Network** | `GielinorNAT` (flat realm) or `realm-garrison` (Gatehouse) |
 | **Address** | `10.10.10.20/24` static, gateway `10.10.10.1`, DNS `10.10.10.10` (flat realm); DHCP from FW01 in the Gatehouse |
 | **Built by** | Windows Lab series; the Gatehouse and Packet Watch reuse it |
+| **Accounts** | `labadmin` is the local administrator (create it at install; it is also the break-glass account). `GIELINOR\student` is a standard user, only in the domain-joined state. See [Lab Account Standard](../Lab%20Account%20Standard.md). |
 
 ## The two states
 
 | State | What it is | Needed by |
 |---|---|---|
-| **Minimal** | Windows installed, static `10.10.10.20`, local admin account, not domain-joined | Packet Watch, the Gatehouse |
+| **Minimal** | Windows installed, static `10.10.10.20`, local administrator `labadmin`, not domain-joined | Packet Watch, the Gatehouse |
 | **Domain-joined** | Minimal + joined to `gielinor.local`, DNS `10.10.10.10` | Windows Administration, Tiered Admin |
 
 If you only need the Gatehouse or Packet Watch, build **minimal** and stop. DC01 isn't required.

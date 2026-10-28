@@ -428,7 +428,7 @@ In **Tier2-Workstation-Restrictions**:
 
 In **Tier1-Server-Restrictions** do the same with `GIELINOR\T1-Admins` (add) and `GIELINOR\Domain Admins` (remove).
 
-> Do **not** use "Replace" or remove the local `Administrator`. That is your break-glass account.
+> Do **not** use "Replace" or remove the local administrator (`Administrator` on SRV01, `labadmin` on WKS01). That is your break-glass account.
 
 ### 5D — Apply and verify
 
@@ -505,7 +505,7 @@ Look at **SubStatus**. `0xC000015B` means "the user has not been granted the req
 1. Which cell(s) in your matrix surprised you? Why?
 2. Both scheduled tasks now fail. Is that a *bug* or the model working? Which of the two failures points at a bigger design problem?
 3. The old Domain Admin accounts are denied — but they are still Domain Admins. Why is that still a problem even though the deny rights work? *(Hint: what else can a Domain Admin do from DC01?)*
-4. The domain `Administrator` is a Domain Admin, so it is denied on Tier 1 and Tier 2 machines — but the **local** `Administrator` on each machine (never removed from local Administrators) is still a way in. What is it for, and what control would you add so it isn't the *same* password on every machine?
+4. The domain `Administrator` is a Domain Admin, so it is denied on Tier 1 and Tier 2 machines — but the **local** administrator on each machine (`Administrator` on SRV01, `labadmin` on WKS01; never removed from local Administrators) is still a way in. What is it for, and what control would you add so it isn't the *same* password on every machine?
 
 Run the scorecard:
 

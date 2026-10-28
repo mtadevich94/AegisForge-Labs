@@ -117,7 +117,7 @@ Also confirm:
 1. Start WKS01. Boot from the ISO.
 2. Language/time/keyboard → **Next** → **Install now**.
 3. Accept the license terms → **Custom: Install Windows only** → select the 60 GB disk → **Next**. This installer stage tends to be slower than Server's — let it run.
-4. **Out-of-box setup (OOBE):** because this is the Enterprise evaluation SKU, you should see a prompt during account setup offering **"Join a domain instead"** (rather than the consumer flow that forces a Microsoft account). If you see that option, take it and create a **local account** now (e.g., `student` with a password) — you'll join the real domain later once it exists.
+4. **Out-of-box setup (OOBE):** because this is the Enterprise evaluation SKU, you should see a prompt during account setup offering **"Join a domain instead"** (rather than the consumer flow that forces a Microsoft account). If you see that option, take it and create a **local account** now named **`labadmin`** with a password you'll remember. Write the password down: this is WKS01's local administrator for every lab in the fleet, and its way back in if a policy locks you out. You'll join the real domain later once it exists.
    - If you *don't* see that option and get stuck on "Sign in with Microsoft," the standard workaround is: press **Shift+F10** at the sign-in-required screen to open a command prompt, then run:
      ```
      oobe\bypassnro

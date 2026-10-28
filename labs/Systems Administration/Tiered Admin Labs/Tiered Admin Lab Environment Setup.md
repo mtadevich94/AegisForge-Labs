@@ -70,6 +70,8 @@ Set-ExecutionPolicy -Scope Process Bypass -Force
 .\Setup-TieredAdminLab-Member.ps1 -Role Workstation -StaticIP 10.10.10.20
 ```
 
+> **Local administrator accounts.** DC01 and SRV01 have the built-in `Administrator`. WKS01 doesn't: Windows 11 disables the built-in one. Wherever this lab says "the local Administrator" on WKS01, use `labadmin`, the local administrator you created at install. Don't remove it from the local Administrators group: it is your way back in if a policy locks you out.
+
 ## Step 4 — Run the DC01 baseline
 
 On **DC01** (elevated, from the lab folder, as a Domain Admin):
@@ -82,6 +84,8 @@ Set-ExecutionPolicy -Scope Process Bypass -Force
 It builds the **flat realm**: the cast accounts, the deliberate privilege mistakes, the `svc-backup`/`svc-web` accounts with SPNs, the empty `Realm\Tier0/Tier1/Tier2/Staging` OUs, the DNS record for `srv01`, and advanced auditing. It prints `DC01 baseline ready` when done.
 
 Want a different lab password? `-LabPassword 'YourOwn16+Chars!'` (must be 16+ characters). Pass the **same** value to the member script (`-LabPassword`) and to `Invoke-LazyAdminDay.ps1` (the guide's `Get-Credential` prompts take whatever you set).
+
+> **Same names, two accounts.** If you did Windows Garrison first, WKS01 already has **local** accounts called `General_Graardor`, `Zelda_Warden`, `Navi` and so on. This lab's baseline creates **domain** accounts with the same names. A bare `Navi` at the sign-in screen signs you in to the local one. Always type the prefix: `GIELINOR\Navi` for the domain account, `WKS01\Navi` for the local one. The passwords differ (`ChangeMe123!` for local, the lab password above for domain), which tells you which one you hit.
 
 ## Step 5 — Re-run the member scripts (domain-joined)
 
@@ -117,7 +121,8 @@ All ticked? **Snapshot DC01, SRV01 and WKS01 as `tiered-baseline`**, then start 
 | `Invoke-Command` to a member says "Access is denied" or WinRM errors | The member script hasn't been run (it enables WinRM), the VM isn't domain-joined yet, or you used an IP address instead of the FQDN. |
 | The member script warns it can't create the scheduled task | Machine isn't domain-joined yet, or DC01's baseline hasn't been run so `svc-backup`/`Navi` don't exist. Fix and re-run it. |
 | `Test-TieredAdminLab.ps1` shows SKIP lines | The thing it needs (a GPO, group or OU) doesn't exist yet. That's expected before you build it. |
-| Locked out after Module 5 | Revert the VM to the `m5-before-gpo` snapshot — or sign in to the machine's **local** Administrator at the console. |
+| Locked out after Module 5 | Revert the VM to the `m5-before-gpo` snapshot — or sign in to the machine's **local** administrator at the console (`Administrator` on SRV01, `labadmin` on WKS01). |
+| A cast account such as `Navi` says the password is wrong, or has the wrong rights | You probably signed in to the **local** account of the same name on WKS01. Local accounts use `ChangeMe123!`; domain accounts use the Tiered lab password (`Gielinor!Lab#2026` by default). Type the prefix: `GIELINOR\Navi` (domain) or `WKS01\Navi` (local). |
 
 ## Resetting
 

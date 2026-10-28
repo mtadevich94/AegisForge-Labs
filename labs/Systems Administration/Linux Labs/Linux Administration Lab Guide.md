@@ -1,16 +1,24 @@
-# The Wrkstation Chronicles — RHEL 8 Practical Exam Lab
+# The Wrkstation Chronicles — RHEL-Family Practical Exam Lab
 ### Student Lab Guide
 
-**Environment:** Rocky Linux 10, AlmaLinux 10, CentOS Stream 8, or RHEL 8 (minimal install)
-**Setup:** Run `sudo bash setup_lab_environment.sh` once, then **snapshot the VM**.
+**Environment:** AlmaLinux 10, minimal install (see the AlmaLinux VirtualBox Setup Guide). Other RHEL-family distributions (Rocky Linux, RHEL) should work too.
+**Setup:** Do the **Access** steps below once: log in as `root`, run the setup script, then **snapshot the VM**. After that you work as `student`.
 **How to use this guide:** Work module by module. Each task tells you *what* to find or do — figure out the command yourself first, then check the Answer Key only if you're stuck or want to confirm.
 
 ---
 
 ## Access - Log into Linux
 *Commands: SSH*
-1. In Virtualbox, select your VM and press **START**
-2. On your host device, open **Command Prompt** or **Powershell** and type 'ssh -p 2222 root@127.0.0.1'
+1. In VirtualBox, select your VM and press **START**.
+2. **First login only.** On your host device, open **Command Prompt** or **PowerShell** and type `ssh -p 2222 root@127.0.0.1`. The password is the `root` password you set when you installed AlmaLinux. If you get `Permission denied`, see Part 8 of the AlmaLinux VirtualBox Setup Guide.
+3. **Run the setup script once.** Still as `root`, download it, read it, then run it:
+   ```
+   curl -fsSL -o setup_lab_environment.sh "https://raw.githubusercontent.com/mtadevich94/AegisForge-Labs/main/labs/Systems%20Administration/Linux%20Labs/Linux%20Administration%20Lab%20Setup%20Bash%20Script.txt"
+   less setup_lab_environment.sh
+   bash setup_lab_environment.sh
+   ```
+4. When it finishes, take a VM snapshot named `linux-start`.
+5. The script turns SSH login as `root` **off on purpose**. From now on connect as the lab account: `ssh -p 2222 student@127.0.0.1` (password `ChangeMe123!`). `student` runs admin commands with `sudo`, which asks for the same password.
 
 ---
 

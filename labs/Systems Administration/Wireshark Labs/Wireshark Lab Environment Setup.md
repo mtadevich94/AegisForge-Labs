@@ -32,7 +32,7 @@ If your DC01 / WKS01 addresses are different from the table above, that's fine �
 3. VM **Settings → Network → Adapter 1**: *Attached to* **NAT Network**, *Name* **`GielinorNAT`**.
 4. Start the VM and install Ubuntu Server with the defaults. When asked:
    - Your name/server name: `watchtower`
-   - Create a user, e.g. `analyst`, with a password you will remember
+   - Create a user named `analyst` (the fleet standard) with a password you will remember
    - Tick **Install OpenSSH server** (gives Module 7 a port 22 to find)
    - Skip all optional "featured snaps"
 5. Reboot, log in at the console.

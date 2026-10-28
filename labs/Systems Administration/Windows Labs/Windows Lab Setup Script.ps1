@@ -1,7 +1,7 @@
 #Requires -RunAsAdministrator
 <#
 .SYNOPSIS
-    Setup-WindowsGarrisonLab.ps1
+    Windows Lab Setup Script.ps1
  
     Builds "The Wrkstation Chronicles — Windows Garrison" — a themed practical
     lab covering the CMD/PowerShell command scope used in the companion lab

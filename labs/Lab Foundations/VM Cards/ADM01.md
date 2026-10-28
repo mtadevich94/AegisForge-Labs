@@ -8,6 +8,7 @@
 | **Address** | `10.20.30.10/24`, gateway `10.20.30.1` (FW01) |
 | **Role** | Management jump host; receives firewall syslog on UDP 514 |
 | **Built by** | Network Segmentation lab |
+| **Accounts** | `gatekeeper` (created at install, has `sudo`). See [Lab Account Standard](../Lab%20Account%20Standard.md). |
 
 ## Build
 

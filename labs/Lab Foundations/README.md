@@ -25,6 +25,7 @@ When you finish a lab, its **Leaves behind** block tells you what state your VMs
 | **VirtualBox and GielinorNAT.md** | One-time host setup: VirtualBox, the shared networks, snapshots, start/stop order, RAM budgets |
 | **Lab Fleet Catalog.md** | Every VM in one table, which labs use it, and a lab-by-VM requirements matrix |
 | **Address Registry.md** | Every network and IP address, plus the ranges reserved for future labs — so labs never collide |
+| **Lab Account Standard.md** | Which account to use on every VM, how to get admin rights, and the lab passwords |
 | **VM Cards/** | One page per VM: build, ready-when state, verify command, snapshot name |
 
 ## The two "eras" of the lab network
