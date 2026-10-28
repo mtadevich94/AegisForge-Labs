@@ -1,0 +1,34 @@
+# THE NIGHT WATCH: REFERENCE RULES
+# ----------------------------------------------------------------------------
+# One working answer to Part 1 of the challenge. Open this only after you have
+# written and tested your own.
+#
+# Tested with Suricata 7.0.3 on Ubuntu 24.04, replaying the Packet Watch captures
+# and 07-hunt.pcap:
+#     suricata -r <pcap> -S night-watch-reference.rules -l out -k none
+# See "Answer Key.md" for the results table.
+#
+# sid range 9100001-9100099 is reserved for this lab. Local rules normally live
+# in 1000000-1999999; the lab uses its own range so you can tell them apart.
+# ----------------------------------------------------------------------------
+
+# 1. Port scan: many fresh connection attempts from one source in a very short time.
+#    flags:S matches a SYN with no ACK, which is how every new TCP connection begins.
+alert tcp any any -> $HOME_NET any (msg:"NIGHTWATCH 1 SYN scan: many connection attempts from one source"; flags:S; threshold: type both, track by_src, count 10, seconds 1; classtype:attempted-recon; sid:9100001; rev:1;)
+
+# 2a. Cleartext credentials in an HTTP form post.
+alert http any any -> any any (msg:"NIGHTWATCH 2a Cleartext password in an HTTP POST"; flow:to_server,established; http.method; content:"POST"; http.request_body; content:"password="; classtype:policy-violation; sid:9100002; rev:1;)
+
+# 2b. Cleartext credentials in FTP. (Every FTP login sends PASS in the clear.)
+alert tcp any any -> any 21 (msg:"NIGHTWATCH 2b Cleartext password in an FTP login"; flow:to_server,established; content:"PASS "; depth:5; classtype:policy-violation; sid:9100003; rev:1;)
+
+# 3. Web login brute force: many login POSTs from one source. One alert, not twenty.
+alert http any any -> any any (msg:"NIGHTWATCH 3 Repeated login POSTs from one source (brute force)"; flow:to_server,established; http.method; content:"POST"; http.uri; content:"/login"; threshold: type both, track by_src, count 8, seconds 30; classtype:attempted-user; sid:9100004; rev:1;)
+
+# 4. DNS tunneling pattern: a long run of hex digits in a hostname label.
+#    Data hidden in DNS names has to be encoded somehow, and hex is the usual choice.
+alert dns any any -> any 53 (msg:"NIGHTWATCH 4 DNS name carries a long hex label (possible tunneling)"; dns.query; pcre:"/(^|\.)[0-9a-f]{16,}\./i"; classtype:trojan-activity; sid:9100005; rev:1;)
+
+# 5. Beacon rhythm: the same client asking for the same rare parent domain again and again.
+#    This is an indicator rule: the hunt (Part 2) is what tells you which domain to put here.
+alert dns any any -> any 53 (msg:"NIGHTWATCH 5 Repeated lookups of a known-bad domain (beacon rhythm)"; dns.query; content:".forge-updates.example"; nocase; threshold: type both, track by_src, count 3, seconds 120; classtype:trojan-activity; sid:9100006; rev:1;)

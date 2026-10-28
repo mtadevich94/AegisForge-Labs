@@ -1,0 +1,94 @@
+#!/usr/sbin/nft -f
+#
+# THE GATEKEEPER'S LEDGER: REFERENCE CLEAN-UP
+# ----------------------------------------------------------------------
+# One defensible answer to the audit, written against "Intended Policy.md".
+# It is NOT the only right answer: yours may keep or drop different "decision"
+# rules, as long as you can defend each choice. See "Auditor's Key.md".
+#
+# Check the syntax safely (this does not load or apply anything):
+#     nft -c -f gatekeeper-ledger-cleaned.nft
+# ----------------------------------------------------------------------
+
+table inet realm {
+
+	set repo_mirrors {
+		type ipv4_addr
+		elements = { 192.0.2.10, 192.0.2.11 }
+	}
+
+	set internal_nets {
+		type ipv4_addr
+		flags interval
+		elements = { 10.20.0.0/16 }
+	}
+
+	# ------------------------------------------------------------------
+	# Traffic addressed TO the firewall itself
+	# ------------------------------------------------------------------
+	chain input {
+		type filter hook input priority filter; policy drop;
+
+		ct state established,related accept comment "replies"
+		ct state invalid drop comment "broken or forged packets"
+		iifname "lo" accept comment "loopback"
+
+		iifname "wan" ip saddr @internal_nets log prefix "fw-spoof-in " drop comment "A-02 anti-spoofing: the outside cannot claim to be inside"
+
+		iifname { "garrison", "market", "citadel" } icmp type echo-request limit rate 10/second accept comment "P-09 ping, rate limited"
+		iifname { "garrison", "market", "citadel" } udp dport { 53, 123 } accept comment "P-08 resolver and time for internal zones"
+		iifname { "garrison", "market", "citadel" } tcp dport 53 accept comment "P-08 resolver (tcp)"
+		iifname "garrison" udp dport 67 accept comment "P-08 DHCP for the garrison"
+		iifname "citadel" ip saddr 10.20.30.10 tcp dport { 22, 443 } accept comment "P-07 only ADM01 manages FW01"
+
+		log prefix "fw-in-drop " drop comment "default deny, logged"
+	}
+
+	# ------------------------------------------------------------------
+	# Traffic passing THROUGH the firewall between zones
+	# ------------------------------------------------------------------
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+
+		ct state established,related accept comment "replies"
+		ct state invalid drop comment "broken or forged packets"
+
+		iifname "wan" ip saddr @internal_nets log prefix "fw-spoof-fwd " drop comment "A-02 anti-spoofing"
+
+		# WAN
+		iifname "wan" oifname "market" ip daddr 10.20.20.10 tcp dport { 80, 443 } accept comment "P-01 published web service"
+
+		# GARRISON
+		iifname "garrison" oifname "wan" tcp dport { 80, 443 } accept comment "P-02 web browsing"
+		iifname "garrison" oifname "market" ip daddr 10.20.20.10 tcp dport { 80, 443 } accept comment "P-03 garrison to web01 web"
+		iifname "garrison" oifname "citadel" ip saddr 10.20.10.100 ip daddr 10.20.30.10 tcp dport 22 log prefix "exception-ex004 " accept comment "EX-004 WKS01 to ADM01 jump host, logged, review each quarter"
+
+		# MARKET (DMZ)
+		iifname "market" oifname "wan" ip saddr 10.20.20.10 ip daddr @repo_mirrors tcp dport { 80, 443 } accept comment "P-04 web01 to approved repos only"
+		iifname "market" oifname "citadel" ip saddr 10.20.20.10 ip daddr 10.20.30.10 udp dport 514 accept comment "A-01 web01 logs to adm01 (auditor decision: documented, added to the matrix)"
+
+		# CITADEL (MGMT)
+		iifname "citadel" oifname "market" ip saddr 10.20.30.10 ip daddr 10.20.20.10 tcp dport 22 accept comment "P-05 ADM01 administers WEB01"
+		iifname "citadel" oifname "wan" ip saddr 10.20.30.10 tcp dport { 80, 443 } accept comment "P-06 ADM01 updates"
+
+		log prefix "fw-fwd-drop " drop comment "default deny, logged"
+	}
+}
+
+# ------------------------------------------------------------------------
+# Address translation
+# ------------------------------------------------------------------------
+table ip realm_nat {
+
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+
+		iifname "wan" ip daddr 10.10.10.5 tcp dport { 80, 443 } dnat to 10.20.20.10 comment "publish web01 (matches P-01)"
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+
+		oifname "wan" masquerade comment "internal zones out"
+	}
+}

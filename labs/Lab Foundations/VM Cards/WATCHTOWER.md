@@ -32,4 +32,4 @@ ip -4 addr show | grep 10.10.10.30 && ping -c1 10.10.10.1
 
 ## Used by
 
-Packet Watch, the Gatehouse (as the outside attacker/observer).
+Packet Watch, the Gatehouse (as the outside attacker/observer), the Detection & Beaconing Challenge (as the Suricata replay host) and, optionally, the Firewall Rule-Base Audit Challenge (to syntax-check with `nft -c`).

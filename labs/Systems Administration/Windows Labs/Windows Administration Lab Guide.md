@@ -2,7 +2,7 @@
 ### Student Lab Guide
 
 **Environment:** `WKS01` — Windows 11 Enterprise, joined to `gielinor.local` (see the Domain Setup & Workstation Join Guide)
-**Setup:** sign in as `.\labadmin` on WKS01 and run `Windows Lab Setup Script.ps1` once, then **snapshot the VM**.
+**Setup:** sign in as `.\labadmin` on WKS01 and run `Windows Lab Setup Script.ps1` once, then **snapshot the VM** as `windows-start`.
 **How to use this guide:** work module by module. Each task tells you *what* to find or do — figure out the command yourself first, then check the Answer Key only if you're stuck or want to confirm. Commands are shown in whichever of CMD or PowerShell fits the task; several tasks deliberately ask for both so you can feel the difference.
 **Cheat sheet:** keep the [CMD vs PowerShell Cheat Sheet](CMD%20vs%20PowerShell%20Cheat%20Sheet.md) open while you work.
 

@@ -29,6 +29,8 @@ All labs share **one virtual environment**: the same VMs on the same virtual net
 | Systems Administration | [Tiered Admin Labs](labs/Systems%20Administration/Tiered%20Admin%20Labs) | Tiering an Active Directory domain | Intermediate | 6–8 hours |
 | Systems Administration | [Fortifying AD Labs](labs/Systems%20Administration/Fortifying%20AD%20Labs) | Guided: remove NTLM, SMB and LDAP legacy risk without breaking a mixed domain | Intermediate | 8–12 hours |
 | Networking | [Network Segmentation Labs (The Gatehouse)](labs/Networking/Network%20Segmentation%20Labs) | Four-zone OPNsense firewall design, testing and monitoring | Intermediate | 8–12 hours |
+| Networking | [Firewall Rule-Base Audit Challenge](labs/Networking/Firewall%20Rule-Base%20Audit%20Challenge) | Open-ended: audit a 54-rule firewall ruleset against a written policy, find the drift, clean it up | Intermediate | 3–5 hours |
+| Networking | [Detection & Beaconing Challenge](labs/Networking/Detection%20and%20Beaconing%20Challenge) | Open-ended: write Suricata rules, then hunt a hidden beacon through a night of normal traffic | Intermediate–Advanced | 4–8 hours |
 | Cybersecurity | *Coming later* | Reserved | | |
 
 ## Safety notice

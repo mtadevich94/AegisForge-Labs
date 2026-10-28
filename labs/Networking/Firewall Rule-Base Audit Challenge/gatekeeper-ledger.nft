@@ -1,0 +1,142 @@
+#!/usr/sbin/nft -f
+#
+# THE GATEKEEPER'S LEDGER
+# ----------------------------------------------------------------------
+# The Realm's firewall rule base, exactly as exported from FW01.
+#
+#   Exported:        2026-09-30, `nft -a list ruleset`
+#   Counters:        collected over the last 91 days (since the last reboot).
+#   Counters count:  the FIRST packet of each new connection only. Replies
+#                    and follow-up packets are accepted by the first
+#                    "established" rule, so they never reach the rules below
+#                    it. In plain words: a counter is "how many times did
+#                    this rule let a NEW connection in".
+#   Handles:         the "# handle N" at the end of a rule is its permanent ID.
+#                    Handles are NOT in evaluation order. Rules inserted above
+#                    an older one got a bigger number. Read the file top to
+#                    bottom for the real order.
+#
+# Zones (interface names):   wan, garrison, market, citadel
+# Addresses:                 see "Intended Policy.md". They match the Gatehouse lab.
+#
+# This file is a DELIBERATELY FLAWED teaching ruleset. Do not use it on a
+# real network. You can syntax-check it safely with:   nft -c -f gatekeeper-ledger.nft
+# ----------------------------------------------------------------------
+
+table inet realm {
+
+	set repo_mirrors {
+		type ipv4_addr
+		elements = { 192.0.2.10, 192.0.2.11 }
+	}
+
+	set old_vendor_nets {
+		type ipv4_addr
+		flags interval
+		elements = { 198.51.100.0/24 }
+	}
+
+	set bad_reputation {
+		type ipv4_addr
+		flags interval
+		elements = { 203.0.113.128/25 }
+	}
+
+	# ------------------------------------------------------------------
+	# Traffic addressed TO the firewall itself
+	# ------------------------------------------------------------------
+	chain input {
+		type filter hook input priority filter; policy drop;
+
+		ct state established,related counter packets 8120344 bytes 912884201 accept # handle 4
+		ct state invalid counter packets 311 bytes 18660 drop # handle 5
+		iifname "lo" counter packets 40218 bytes 3217440 accept # handle 6
+		iifname { "garrison", "market", "citadel" } icmp type echo-request counter packets 22910 bytes 1924440 accept comment "ping for troubleshooting" # handle 9
+		iifname { "garrison", "market", "citadel" } udp dport 53 counter packets 2210544 bytes 154738080 accept comment "DNS resolver" # handle 11
+		iifname { "garrison", "market", "citadel" } tcp dport 53 counter packets 4120 bytes 247200 accept comment "DNS resolver (tcp)" # handle 12
+		iifname "garrison" udp dport 67 counter packets 1840 bytes 618240 accept comment "DHCP for the garrison" # handle 13
+		ip saddr 10.20.30.10 tcp dport { 22, 443 } counter packets 1311 bytes 78660 accept comment "ADM01 manages FW01" # handle 15
+		tcp dport 22 counter packets 41207 bytes 2472420 accept comment "TEMP ssh from anywhere while jump host is rebuilt - CHG-0231 - remove by 2025-02-01" # handle 16
+		iifname "wan" tcp dport 443 counter packets 9984 bytes 599040 accept comment "GUI for vendor support" # handle 17
+		udp dport 161 counter packets 120410 bytes 8669520 accept comment "SNMP monitoring (community: public)" # handle 18
+		iifname "citadel" counter packets 77 bytes 4620 accept comment "mgmt zone is trusted" # handle 19
+		log prefix "fw-in-drop " counter packets 188220 bytes 11293200 drop comment "default deny, logged" # handle 22
+	}
+
+	# ------------------------------------------------------------------
+	# Traffic passing THROUGH the firewall between zones
+	# ------------------------------------------------------------------
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+
+		ct state established,related counter packets 91442118 bytes 71203552114 accept # handle 30
+		ct state invalid counter packets 2047 bytes 122820 drop # handle 31
+
+		iifname "garrison" oifname "market" counter packets 61204 bytes 3672240 accept comment "CHG-0188 garrison needs web01 - allow all while debugging" # handle 55
+
+		iifname "wan" oifname "market" ip daddr 10.20.20.10 tcp dport { 80, 443 } counter packets 412877 bytes 24772620 accept comment "published web service" # handle 40
+		iifname "wan" oifname "market" ip daddr 10.20.20.10 tcp dport 80 counter packets 0 bytes 0 accept comment "web01 http" # handle 41
+		iifname "wan" oifname "market" ip daddr 10.20.20.10 tcp dport 8080 counter packets 0 bytes 0 accept comment "CHG-0140 staging site" # handle 42
+
+		ip saddr 203.0.113.0/24 ip daddr 10.20.20.10 tcp dport { 80, 443 } counter packets 0 bytes 0 drop comment "SOC block list - scanner range (SOC says still seeing scans)" # handle 33
+
+		iifname "garrison" oifname "market" ip daddr 10.20.20.10 tcp dport { 80, 443 } counter packets 0 bytes 0 accept comment "garrison to web01" # handle 60
+		iifname "garrison" oifname "market" log prefix "garrison-market-deny " counter packets 0 bytes 0 drop comment "garrison may only reach web01 web" # handle 61
+
+		iifname "garrison" oifname "wan" tcp dport { 80, 443 } counter packets 1920331 bytes 115219860 accept comment "web browsing" # handle 62
+		iifname "garrison" oifname "wan" udp dport 53 counter packets 733410 bytes 51338700 accept comment "DNS" # handle 63
+		iifname "garrison" oifname "wan" tcp dport 53 counter packets 2210 bytes 132600 accept comment "DNS (tcp)" # handle 64
+		iifname "garrison" oifname "wan" tcp dport { 21, 23, 25 } counter packets 312 bytes 18720 accept comment "legacy apps - ftp telnet smtp" # handle 65
+		iifname "garrison" oifname "wan" udp dport 123 counter packets 1022 bytes 77672 accept comment "ntp" # handle 100
+
+		iifname "garrison" oifname "citadel" ip saddr 10.20.10.100 ip daddr 10.20.30.10 tcp dport 22 log prefix "exception-ex004 " counter packets 87 bytes 5220 accept comment "approved exception EX-004: WKS01 to ADM01 jump host (logged)" # handle 66
+		iifname "garrison" oifname "citadel" ip daddr 10.20.30.0/24 tcp dport { 22, 445, 3389 } counter packets 1904 bytes 114240 accept comment "helpdesk admin access - CHG-0207" # handle 67
+
+		iifname "market" oifname "wan" counter packets 288914 bytes 17334840 accept comment "web01 updates - all outbound OK" # handle 70
+		iifname "market" oifname "wan" ip daddr @repo_mirrors tcp dport { 80, 443 } counter packets 0 bytes 0 accept comment "web01 apt repos only" # handle 71
+		iifname "market" oifname "citadel" ip saddr 10.20.20.10 ip daddr 10.20.30.10 udp dport 514 counter packets 55210 bytes 4417600 accept comment "web01 logs to adm01" # handle 72
+		iifname "market" oifname "garrison" ip saddr 10.20.20.10 tcp dport 445 counter packets 12 bytes 720 accept comment "CHG-0099 web01 pushes reports to garrison file share" # handle 73
+		iifname "market" oifname "citadel" ip daddr 10.20.30.10 tcp dport 22 counter packets 3 bytes 180 accept comment "web01 can ssh to adm01 for deploys" # handle 74
+
+		iifname "citadel" oifname "market" ip saddr 10.20.30.10 ip daddr 10.20.20.10 tcp dport 22 counter packets 640 bytes 38400 accept comment "ADM01 administers WEB01" # handle 80
+		iifname "citadel" oifname "wan" tcp dport { 80, 443 } counter packets 9120 bytes 547200 accept comment "ADM01 updates" # handle 81
+		iifname "citadel" oifname "wan" counter packets 4410 bytes 264600 accept comment "TEMP citadel full internet for scanner install - CHG-0254 - expires 2025-03-01" # handle 82
+		iifname "citadel" oifname "garrison" counter packets 22 bytes 1320 accept comment "mgmt can reach everything" # handle 83
+
+		iifname "wan" oifname "garrison" ip daddr 10.20.10.100 tcp dport 3389 counter packets 5531 bytes 331860 accept comment "RDP for contractor - CHG-0119 - DELETE after 2024-12" # handle 90
+		iifname "wan" oifname "citadel" ip daddr 10.20.30.10 tcp dport 22 counter packets 8821 bytes 529260 accept comment "ssh to adm01 from outside for the on-call admin" # handle 91
+
+		ip saddr 10.20.0.0/16 ip daddr 10.20.0.0/16 icmp type echo-request counter packets 14310 bytes 1202040 accept comment "ping between zones for diagnostics" # handle 93
+
+		ip saddr 198.51.100.0/24 counter packets 0 bytes 0 accept comment "vendor VPN subnet - old support contract" # handle 96
+		ip saddr @old_vendor_nets counter packets 0 bytes 0 accept comment "vendor VPN subnet (set)" # handle 99
+		ip daddr 10.20.20.50 tcp dport 80 counter packets 0 bytes 0 accept comment "old-web02" # handle 97
+		ip daddr 10.20.20.50 tcp dport 443 counter packets 0 bytes 0 accept comment "old-web02 tls" # handle 98
+
+		ip saddr 10.20.0.0/16 counter packets 98333 bytes 5899980 accept comment "TEMP migration window - CHG-0301 - remove after cutover 2025-04-15" # handle 102
+
+		counter packets 7344 bytes 440640 drop comment "default deny" # handle 110
+	}
+}
+
+# ------------------------------------------------------------------------
+# Address translation
+# ------------------------------------------------------------------------
+table ip realm_nat {
+
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+
+		iifname "wan" ip daddr 10.10.10.5 tcp dport { 80, 443 } counter packets 412877 bytes 24772620 dnat to 10.20.20.10 comment "publish web01" # handle 201
+		iifname "wan" ip daddr 10.10.10.5 tcp dport 8080 counter packets 0 bytes 0 dnat to 10.20.20.10 comment "staging site CHG-0140" # handle 202
+		iifname "wan" ip daddr 10.10.10.5 tcp dport 3389 counter packets 5531 bytes 331860 dnat to 10.20.10.100 comment "contractor RDP CHG-0119" # handle 203
+		iifname "wan" ip daddr 10.10.10.5 tcp dport 2222 counter packets 8821 bytes 529260 dnat to 10.20.30.10:22 comment "adm01 ssh on-call" # handle 204
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+
+		oifname "wan" counter packets 2889114 bytes 173346840 masquerade comment "internal zones out" # handle 211
+		ip saddr 10.20.20.0/24 oifname "wan" counter packets 0 bytes 0 masquerade comment "dmz out" # handle 212
+	}
+}
