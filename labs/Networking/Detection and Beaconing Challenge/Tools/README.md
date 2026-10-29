@@ -3,6 +3,7 @@
 | File | What it does |
 |---|---|
 | `pcap_to_tables.py` | Turns a capture into `conns.csv`, `dns.csv`, `tls.csv` for the hunt. `python3 pcap_to_tables.py <pcap> <outdir>` |
+| `hunt_starter.py` | A starting point for the hunt: loads the tables and lists each source→destination pair with the gaps between its connections. It doesn't score anything. `python3 hunt_starter.py conns.csv [tls.csv]` |
 | `make_hunt_pcap.py` | Maintainer script. Regenerates `pcap/07-hunt.pcap` (seeded, so the output is identical every time). `python3 make_hunt_pcap.py ../pcap` |
 | `flowlib.py` | Helper used by the generator. A copy of the Packet Watch lab's helper, kept here so this folder stands alone. |
 

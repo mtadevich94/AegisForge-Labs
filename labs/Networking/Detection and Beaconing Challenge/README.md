@@ -14,6 +14,10 @@ Part of **Project AegisForge** → **Network Engineer path** → *Phase 2: Monit
 > **Leaves behind:** a rules file, a hunt script or notebook, and a written report. Nothing on the lab fleet is changed. Everything runs against capture files.
 > **Reset:** delete your `out/` folders and re-copy the pcaps. Nothing to restore.
 
+## New to beacons?
+
+Read **[What Is a Beacon?](What%20Is%20a%20Beacon.md)** before Part 2. It explains command-and-control, why implants check in on a timer, what sleep and jitter are, and why legitimate software looks just as regular.
+
 ## Why captures, not live traffic?
 
 Reading a capture file is the safest and most repeatable way to learn detection. You can replay the same night a hundred times, change a rule, and see exactly what changed. It is also how real analysts work after an incident. Nothing here sends traffic anywhere.
@@ -29,7 +33,7 @@ Reading a capture file is the safest and most repeatable way to learn detection.
 
 ### Part 1. Write five rules
 
-Using the Packet Watch captures `05-scan.pcap` and `06-incident.pcap`, write Suricata rules that detect:
+New to Suricata rules? Read the **[Suricata Rule Primer](Suricata%20Rule%20Primer.md)** first. It covers rule anatomy, the keywords you need and a tested worked example. Then, using the Packet Watch captures `05-scan.pcap` and `06-incident.pcap`, write Suricata rules that detect:
 
 1. a **port scan** (one source, many fresh connections, very fast)
 2. **cleartext credentials**, in an HTTP form post *and* in an FTP login
@@ -37,14 +41,14 @@ Using the Packet Watch captures `05-scan.pcap` and `06-incident.pcap`, write Sur
 4. a **DNS name that carries data** (a long encoded label in a hostname)
 5. a **repeated lookup of one suspicious domain** (a beacon's rhythm in DNS)
 
-Then run all five against `07-hunt.pcap`, a quiet night where nothing should shout. Every alert you get there is a **false positive** you need to explain or fix. Tuning a rule until it is quiet *and* still catches the attack is the real skill.
+Then run all five against `07-hunt.pcap`, a quiet night where nothing should shout. Every alert you get there is a **false positive** you need to explain or fix. Tuning a rule until it is quiet *and* still catches the attack is the real skill. **Keep your first draft** (`my-v1.rules`) and its `07` output so you can show the before and after.
 
 ### Part 2. Hunt the beacon
 
 `pcap/07-hunt.pcap` is fifty minutes of ordinary Realm traffic with **one** machine calling home to a command server. It also contains traffic that is just as regular and completely harmless. A hunt that only looks for "regular" will drown.
 
 1. Turn the capture into **tables** (connections, DNS, TLS names) with `Tools/pcap_to_tables.py`.
-2. **Explore it** the way an analyst would: who talks to whom, how often, how much?
+2. **Explore it** the way an analyst would: who talks to whom, how often, how much? `Tools/hunt_starter.py` lists every source→destination pair with its gaps between connections, as raw material. It doesn't score anything.
 3. Write your own scoring script (a spreadsheet works too) that ranks source→destination pairs by how beacon-like they are.
 4. Name the beacon, say **why** it is the beacon and **why the decoys are not**, and write the detection rule you would deploy.
 

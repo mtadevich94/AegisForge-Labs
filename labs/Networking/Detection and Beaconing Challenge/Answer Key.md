@@ -19,6 +19,8 @@ The file is `reference/night-watch-reference.rules`. Tested with Suricata 7.0.3,
 | `06-incident` | scan, HTTP and FTP creds, brute force, DNS tunnel names, DNS rhythm | rule 1 ×1–2, 2a ×20, 2b ×3, rule 3 ×1, rule 4 ×3, rule 5 ×1 |
 | `07-hunt` | the one cleartext login (2a), and the beacon's DNS lookups (5) | 2a ×1, rule 5 ×4–9, and occasionally a stray rule 1 |
 
+The reference file also has a sixth rule (sid 9100007) written after the hunt: it matches the beacon's TLS server name. On `07-hunt` it fires **44 times, once per beacon connection, identically on every run**, and on none of the other captures. It is steadier than the DNS rule because it doesn't depend on a threshold window.
+
 ### Things worth noticing
 
 - **Rule 2a fires 20 times on `06`.** That is correct, because each of the 20 login attempts carries a cleartext password. It is also why rule 3 exists: twenty alerts hide the one story, which is "someone is guessing passwords". An analyst reads the one aggregated alert.
@@ -87,7 +89,7 @@ With `--rank regularity` (regularity alone), the beacon ranks **fifth**: NTP, th
 A good answer:
 
 - Add `forge-updates.example` (parent domain) to a **watch-list or DNS sinkhole**, as in the Gatehouse's Module 7.
-- Put the TLS server name `api.forge-updates.example` in a rule as well, so you catch it when DNS is bypassed.
+- Put the TLS server name in a rule as well, so you catch it when DNS is bypassed. That is reference rule 6 (`tls.sni; content:"forge-updates.example"; endswith;`), tested above.
 - **Don't auto-block `203.0.113.77` alone.** An IP can be shared or change, and the rule must not break the vendor telemetry next to it.
 - **Isolate WKS01** and investigate it, because the beacon proves it is running something it shouldn't.
 

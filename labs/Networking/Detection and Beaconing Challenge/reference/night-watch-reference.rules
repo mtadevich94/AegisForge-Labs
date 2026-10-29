@@ -1,6 +1,6 @@
 # THE NIGHT WATCH: REFERENCE RULES
 # ----------------------------------------------------------------------------
-# One working answer to Part 1 of the challenge. Open this only after you have
+# One working answer to Part 1 of the challenge (five rules, plus a sixth from the hunt). Open this only after you have
 # written and tested your own.
 #
 # Tested with Suricata 7.0.3 on Ubuntu 24.04, replaying the Packet Watch captures
@@ -32,3 +32,9 @@ alert dns any any -> any 53 (msg:"NIGHTWATCH 4 DNS name carries a long hex label
 # 5. Beacon rhythm: the same client asking for the same rare parent domain again and again.
 #    This is an indicator rule: the hunt (Part 2) is what tells you which domain to put here.
 alert dns any any -> any 53 (msg:"NIGHTWATCH 5 Repeated lookups of a known-bad domain (beacon rhythm)"; dns.query; content:".forge-updates.example"; nocase; threshold: type both, track by_src, count 3, seconds 120; classtype:trojan-activity; sid:9100006; rev:1;)
+
+# 6. Beacon rhythm, TLS version: the same hunt result expressed on the TLS server name.
+#    The destination is encrypted, but the name the client asks for is not. This catches the
+#    beacon even if it never uses DNS (an address hard-coded into the malware).
+#    One alert per connection is fine for a watch-list rule; in production you would threshold it.
+alert tls any any -> any any (msg:"NIGHTWATCH 6 TLS connection to a known-bad server name (beacon)"; flow:to_server,established; tls.sni; content:"forge-updates.example"; endswith; classtype:trojan-activity; sid:9100007; rev:1;)

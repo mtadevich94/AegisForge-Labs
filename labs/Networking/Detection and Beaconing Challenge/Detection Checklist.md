@@ -39,11 +39,13 @@ Use this to **cross-reference your own work**. It lists things to look for, not 
 ### 6. Tuning
 - **What:** At least one rule you changed after a false positive.
 - **Why:** Untuned rules get switched off by a tired analyst at 3 a.m.
-- **Where to look:** The rule's `msg` should say what it caught; your comment should say what it could catch by mistake.
+- **Where to look:** The rule's `msg` should say what it caught; your comment should say what it could catch by mistake. Keep `my-v1.rules` and its output, so the before is on record (see the **[Suricata Rule Primer](Suricata%20Rule%20Primer.md)**).
 
 ---
 
 ## Part 2. The hunt
+
+*New to the idea of a beacon? Read **[What Is a Beacon?](What%20Is%20a%20Beacon.md)** first.*
 
 ### 7. Look before you score
 - **What:** Count connections per destination, per source, and per hour; list the top DNS names; list every TLS server name.
@@ -71,7 +73,7 @@ Use this to **cross-reference your own work**. It lists things to look for, not 
 ### 12. The call
 - **What:** Name the beacon, with numbers, and decide what you would do about it.
 - **Why:** An analyst's job ends in a decision. Blocking a destination has a cost; isolating a machine has a bigger one.
-- **Where to look:** Check the DNS and TLS names for the destination. What does the Gatehouse's Module 7 (egress and DNS control) let you do about it?
+- **Where to look:** Check the DNS and TLS names for the destination. A rule on the TLS server name (`tls.sni`) works even when the client never uses DNS. What does the Gatehouse's Module 7 (egress and DNS control) let you do about it?
 
 ---
 

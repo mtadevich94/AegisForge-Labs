@@ -21,7 +21,7 @@ Paste your rules file, or link to it. Then fill one row per rule.
 | 4 DNS data | | | | | |
 | 5 DNS rhythm | | | | | |
 
-**Tuning story (pick one rule):** the rule before, the false positive or miss, the change, the rule after, the new result.
+**Tuning story (pick one rule):** your first draft (`my-v1.rules`), the false positive or miss it produced, the change, the rule after, the new result.
 
 **Run-to-run variation:** did any threshold rule alert a different number of times on repeat runs? What does that mean for how you'd trust it?
 

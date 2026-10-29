@@ -27,6 +27,7 @@ sha256sum -c SHA256SUMS
 ## 3. Replay a capture through Suricata
 
 ```bash
+suricata -T -S my.rules -c /etc/suricata/suricata.yaml    # check the rules parse (fast)
 mkdir -p out && rm -rf out/*
 suricata -r 05-scan.pcap -S my.rules -l out -k none
 cat out/fast.log
@@ -57,6 +58,8 @@ ls tables      # conns.csv  dns.csv  tls.csv
 | `tls.csv` | `ts, src, dst, sni` (the server name a client asked for) |
 
 `ts` is seconds since the capture started. Open the CSVs in a spreadsheet, `pandas`, or plain Python.
+
+For a head start, `python3 Tools/hunt_starter.py tables/conns.csv tables/tls.csv` prints every source→destination pair with its connection gaps. Scoring them is your job.
 
 ## 5. Zeek (optional, unverified)
 
