@@ -16,6 +16,10 @@ Part of **Project AegisForge** → **Network Engineer path** → *Phase 1: Secur
 > **Leaves behind:** a written audit report and a cleaned ruleset. Nothing is installed or changed on any VM.
 > **Reset:** download `gatekeeper-ledger.nft` again.
 
+## New to rule-base audits?
+
+Read **[Firewall Audit Concepts](Firewall%20Audit%20Concepts.md)** first. It explains, with a small made-up ruleset, what first-match ordering, default deny, least privilege, shadowed rules, hit counters and egress control are, and why auditors care about each. The Checklist then tells you what to look for.
+
 ## Why nftables, when the Gatehouse uses OPNsense?
 
 OPNsense is built on `pf`, and a `pf` ruleset can't be checked or read without OPNsense running. **nftables** is the Linux firewall language. It is plain text, free, readable top to bottom, and `nft -c` can check a file without loading it. The audit skills are the same on any firewall: shadowed rules, any/any rules, dead rules and missing egress control look identical on pf, iptables, Cisco ASA, Palo Alto or a cloud security group. If you can audit this, you can audit those.
@@ -89,6 +93,7 @@ Put the report in your **Public Learning Log** repo. A cleaned ruleset and a cle
 |---|---|
 | **Intended Policy.md** | What the Council approved. Read this first |
 | `gatekeeper-ledger.nft` | The Ledger: the ruleset to audit, with 91 days of hit counters |
+| **Firewall Audit Concepts.md** | What each audit idea is and why it matters, with a small worked example that is not the Ledger |
 | **Audit Checklist.md** | Categories of problems, with what to check, why it matters and where to look |
 | **Audit Report Template.md** | What you hand in |
 | **Auditor's Key.md** | The planted findings, the traps, and a model change plan. Open it only *after* you've written your own |

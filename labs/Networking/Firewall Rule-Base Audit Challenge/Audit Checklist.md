@@ -6,6 +6,8 @@ Use this to **cross-reference your own work**. It is a list of things to look fo
 
 ---
 
+*New to these ideas? Read **[Firewall Audit Concepts](Firewall%20Audit%20Concepts.md)** first. It explains what each category below means and why it matters.*
+
 ## How to read a rule
 
 Every rule is one line, read left to right: **match** the packet, **count** it, then give a **verdict**.
@@ -147,6 +149,7 @@ Select-String -Path .\gatekeeper-ledger.nft -Pattern '# handle' | Select-Object 
 |:-:|---|---|---|
 | ☐ | **Anti-spoofing:** does the firewall drop outside packets that claim to come from inside? | Spoofed internal addresses bypass rules that trust internal sources | A rule on `wan` with your internal ranges as the source |
 | ☐ | **Rate limiting:** is anything unbounded that could be flooded? | ICMP and other cheap protocols can be used to degrade the firewall | The `icmp` rules |
+| ☐ | **Threat-intelligence or geography blocks:** is there a list of known-bad addresses, and does a rule actually enforce it? Is it above the allows, applied outbound too, and kept current? | A list nobody enforces is false assurance. A block placed too low, or a feed that went stale, protects nothing | Sets and aliases at the top of the file; the rules that reference them |
 | ☐ | **A change record:** ticket, owner, expiry on every non-baseline rule | Without it the next audit repeats this one | Comments |
 | ☐ | **Anything else a hardened firewall has that this one lacks** | The best findings are the ones the ruleset can't show you | Your own experience |
 

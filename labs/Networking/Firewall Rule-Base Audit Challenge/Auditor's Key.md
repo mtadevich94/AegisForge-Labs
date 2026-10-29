@@ -65,7 +65,7 @@ You don't need to match this list exactly. If you found something not listed, an
 | 23 | **41** | H, B | Duplicate of 40 for port 80 only. Zero hits | Remove |
 | 24 | **42**, NAT **202** | G, D, K | Staging site on port 8080 (CHG-0140). Zero hits on both. The allow rule and the NAT entry agree, so it *would* work if anything listened | Remove both |
 | 25 | **97**, **98** | G, D | Rules for `10.20.20.50` ("old-web02"). That host isn't in the policy. Zero hits | Remove. If the address is ever reused, these rules open it |
-| 26 | NAT **212**, set `bad_reputation` | H, G | A second masquerade rule that the first one already covers (zero hits). A set defined and never used | Remove both |
+| 26 | NAT **212**, set `bad_reputation` | H, G, L | A second masquerade rule that the first one already covers (zero hits). A set of known-bad addresses that is defined and **never referenced by any rule** | Remove NAT 212. For the set, the policy is silent on threat-intelligence blocking, so it is a decision: either wire it into a logged drop rule near the top (with an owner and an update source) or remove it. A list nobody enforces is false assurance. The reference clean-up removes it |
 
 ### Decisions: the policy is silent, and either answer is defensible
 
